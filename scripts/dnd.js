@@ -3,7 +3,7 @@
  */
 
 $(function() {
-	
+
 	var lists = document.getElementsByTagName("ul");
 	var regexp = /\bdnd\b/;
 	for (var i = 0; i < lists.length; i++) {
@@ -29,11 +29,11 @@ $(function() {
 				return;
 			}
 			return false;
-		}
+		};
 
 		list.ondragover = function(e) {
 			return false;
-		}
+		};
 
 		list.ondragleave = function(e) {
 			e = e || window.event;
@@ -54,8 +54,46 @@ $(function() {
 			var text = dt.getData("Text");
 			if (text) {
 				var item = document.createElement("li");
-				item.droppable = true;
+				item.draggable = true;
+				item.appendChild(document.createTextNode(text));
+				list.appendChild(item);
+
+				list.className = original_class;
+				entered = 0;
 			}
+		};
+
+		var items = list.getElementsByTagName("li");
+		for (var i = 0; i < items.length; i++) {
+			items[i].draggable = true;
+		}
+
+		list.ondragstart = function(e) {
+			var e = e || window.event;
+			var target = e.target || e.srcElement;
+			if (target.tagName != "LI") {
+				return false;
+			}
+			var dt = e.dataTransfer;
+			dt.setData("Text", target.innerText || target.textContent);
+			dt.effectAllowed = "copyMove";
+		};
+
+		list.ondragend = function(e){
+			e = e || window.event;
+			var target = e.target || e.srcElement;
+			if(e.dataTransfer.dropEffect === "move"){
+				target.parentNode.removeChild(target);
+			}
+		};
+
+		function ischild(a,b){
+			for(;a;a=parentNode){
+				if(a===b){
+					return ture;
+				}
+			}
+			return false;
 		}
 	}
 });
