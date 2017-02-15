@@ -3,9 +3,7 @@
  */
 
 $(function() {
-
-	console.log(document.getElementById("test"));
-
+	
 	var lists = document.getElementsByTagName("ul");
 	var regexp = /\bdnd\b/;
 	for (var i = 0; i < lists.length; i++) {
